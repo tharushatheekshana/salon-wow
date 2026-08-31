@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StaffLeave extends Model
 {
-    use HasFactory;
-
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'user_id',
         'leave_date',
@@ -24,6 +24,9 @@ class StaffLeave extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

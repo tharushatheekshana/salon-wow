@@ -9,6 +9,7 @@ use App\Services\AppointmentService;
 use App\Services\BookingSlotService;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -150,7 +151,7 @@ class AppointmentDashboard extends Component
         }
     }
 
-    public function render(BookingSlotService $slotService)
+    public function render(BookingSlotService $slotService): View
     {
         $query = Appointment::with(['service', 'staff.staffProfile', 'customer'])
             ->when($this->search, function ($q) {

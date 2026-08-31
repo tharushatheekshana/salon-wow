@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Appointment;
 use App\Services\AppointmentService;
 use Exception;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -62,7 +63,7 @@ class BookingLookup extends Component
         }
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.booking-lookup');
     }

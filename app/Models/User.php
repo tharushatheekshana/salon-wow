@@ -69,42 +69,66 @@ class User extends Authenticatable implements PasskeyUser
         return $this->role === 'customer';
     }
 
+    /**
+     * @return HasOne<StaffProfile, $this>
+     */
     public function staffProfile(): HasOne
     {
         return $this->hasOne(StaffProfile::class, 'user_id');
     }
 
+    /**
+     * @return HasMany<StaffSchedule, $this>
+     */
     public function staffSchedules(): HasMany
     {
         return $this->hasMany(StaffSchedule::class, 'user_id');
     }
 
+    /**
+     * @return HasMany<StaffLeave, $this>
+     */
     public function staffLeaves(): HasMany
     {
         return $this->hasMany(StaffLeave::class, 'user_id');
     }
 
+    /**
+     * @return BelongsToMany<Service, $this>
+     */
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class, 'service_staff', 'user_id', 'service_id')
             ->withTimestamps();
     }
 
+    /**
+     * @return HasMany<Appointment, $this>
+     */
     public function appointmentsAsCustomer(): HasMany
     {
         return $this->hasMany(Appointment::class, 'customer_id');
     }
 
+    /**
+     * @return HasMany<Appointment, $this>
+     */
     public function appointmentsAsStaff(): HasMany
     {
         return $this->hasMany(Appointment::class, 'staff_id');
     }
 
+    /**
+     * @return HasMany<Review, $this>
+     */
     public function reviewsGiven(): HasMany
     {
         return $this->hasMany(Review::class, 'customer_id');
     }
 
+    /**
+     * @return HasMany<Review, $this>
+     */
     public function reviewsReceived(): HasMany
     {
         return $this->hasMany(Review::class, 'staff_id');

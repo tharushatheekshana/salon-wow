@@ -69,6 +69,7 @@ class SalonDatabaseSeeder extends Seeder
         $existingStaffEmails = array_column($staffMembers, 'email');
         User::where('role', 'staff')->whereNotIn('email', $existingStaffEmails)->delete();
 
+        /** @var array<string, User> $createdStaff */
         $createdStaff = [];
         foreach ($staffMembers as $data) {
             $user = User::updateOrCreate(
@@ -270,8 +271,6 @@ class SalonDatabaseSeeder extends Seeder
             ],
         ];
 
-        $allCreatedServices = [];
-
         foreach ($categoriesData as $catData) {
             $category = Category::updateOrCreate(
                 ['slug' => $catData['slug']],
@@ -308,22 +307,16 @@ class SalonDatabaseSeeder extends Seeder
                     }
                 }
                 $service->staff()->sync($staffIds);
-
-                $allCreatedServices[] = $service;
             }
         }
 
-        // 5. Sample Past & Upcoming Appointments with Authentic Reviews
-        $serviceCut = Service::where('slug', 'executive-gents-cut-beard-trim')->first();
-        $serviceFade = Service::where('slug', 'modern-fade-haircut-styling')->first();
-        $serviceRebond = Service::where('slug', 'permanent-hair-rebonding-smoothing')->first();
         // 5. Official Facebook Reviews provided by Salon WOW page
         Review::query()->delete();
 
         $serviceCut = Service::where('slug', 'executive-gents-cut-beard-trim')->first();
         $serviceFade = Service::where('slug', 'modern-fade-haircut-styling')->first();
 
-        $nuwan = $createdStaff['Nuwan Pradeep'] ?? null;
+        $nuwan = $createdStaff['Nuwan Pradeep'];
 
         $reviewsData = [
             [
@@ -362,7 +355,7 @@ class SalonDatabaseSeeder extends Seeder
         ];
 
         foreach ($reviewsData as $rev) {
-            if ($rev['service'] && $rev['staff']) {
+            if ($rev['service'] instanceof Service) {
                 $apt = Appointment::updateOrCreate(
                     ['booking_reference' => $rev['ref']],
                     [
@@ -399,7 +392,7 @@ class SalonDatabaseSeeder extends Seeder
         }
 
         // Future appointment for Demo customer
-        if ($serviceCut && $nuwan) {
+        if ($serviceCut instanceof Service) {
             Appointment::updateOrCreate(
                 ['booking_reference' => 'SLN-773192'],
                 [

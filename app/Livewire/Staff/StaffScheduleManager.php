@@ -6,18 +6,23 @@ use App\Models\Appointment;
 use App\Models\StaffSchedule;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
 class StaffScheduleManager extends Component
 {
+    /**
+     * @var array<int, array{day_of_week: int, day_name: string, start_time: string, end_time: string, break_start_time: string, break_end_time: string, is_day_off: bool}>
+     */
     public array $schedules = [];
 
     public ?string $feedbackMessage = null;
 
     public function mount(): void
     {
+        /** @var User $user */
         $user = auth()->user();
         $staffSchedules = StaffSchedule::where('user_id', $user->id)
             ->orderBy('day_of_week')
@@ -67,7 +72,7 @@ class StaffScheduleManager extends Component
         $this->feedbackMessage = 'Your working hours & weekly availability have been saved!';
     }
 
-    public function render()
+    public function render(): View
     {
         $todayAppointments = Appointment::with(['service', 'customer'])
             ->where('staff_id', auth()->id())

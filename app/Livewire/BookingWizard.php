@@ -10,6 +10,7 @@ use App\Services\AppointmentService;
 use App\Services\BookingSlotService;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -137,14 +138,14 @@ class BookingWizard extends Component
 
         try {
             $appointment = $appointmentService->createAppointment([
-                'service_id' => $this->selectedServiceId,
-                'staff_id' => $this->selectedStaffId,
+                'service_id' => (int) $this->selectedServiceId,
+                'staff_id' => $this->selectedStaffId ?? 'any',
                 'appointment_date' => $this->selectedDate,
                 'start_time' => $this->selectedSlot,
                 'customer_name' => $this->customerName,
                 'customer_email' => $this->customerEmail,
                 'customer_phone' => $this->customerPhone,
-                'customer_id' => auth()->id(),
+                'customer_id' => auth()->id() ? (int) auth()->id() : null,
                 'payment_method' => $this->paymentMethod,
                 'notes' => $this->notes,
             ]);
@@ -168,7 +169,7 @@ class BookingWizard extends Component
         $this->errorMessage = null;
     }
 
-    public function render(BookingSlotService $slotService)
+    public function render(BookingSlotService $slotService): View
     {
         $categories = Category::where('is_active', true)
             ->with(['activeServices'])

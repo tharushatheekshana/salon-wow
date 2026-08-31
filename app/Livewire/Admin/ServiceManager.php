@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Category;
 use App\Models\Service;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -34,6 +35,9 @@ class ServiceManager extends Component
 
     public bool $is_active = true;
 
+    /**
+     * @var array<int, int|string>
+     */
     public array $selectedStaffIds = [];
 
     public ?string $feedbackMessage = null;
@@ -110,7 +114,7 @@ class ServiceManager extends Component
         $this->feedbackMessage = "Service {$service->name} status updated.";
     }
 
-    public function render()
+    public function render(): View
     {
         $categories = Category::with('services.staff')->orderBy('order')->get();
         $allStaff = User::where('role', 'staff')->get();

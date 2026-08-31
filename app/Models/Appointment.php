@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -10,8 +9,9 @@ use Illuminate\Support\Carbon;
 
 class Appointment extends Model
 {
-    use HasFactory;
-
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'booking_reference',
         'customer_id',
@@ -45,21 +45,33 @@ class Appointment extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'customer_id');
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function staff(): BelongsTo
     {
         return $this->belongsTo(User::class, 'staff_id');
     }
 
+    /**
+     * @return BelongsTo<Service, $this>
+     */
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }
 
+    /**
+     * @return HasOne<Review, $this>
+     */
     public function review(): HasOne
     {
         return $this->hasOne(Review::class);

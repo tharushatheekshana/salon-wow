@@ -4,7 +4,9 @@ namespace App\Livewire;
 
 use App\Models\Appointment;
 use App\Models\Review;
+use App\Models\User;
 use App\Services\AppointmentService;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -102,8 +104,9 @@ class CustomerAppointments extends Component
         $this->showReviewModal = false;
     }
 
-    public function render()
+    public function render(): View
     {
+        /** @var User $user */
         $user = auth()->user();
 
         $upcomingAppointments = Appointment::with(['service', 'staff.staffProfile'])
