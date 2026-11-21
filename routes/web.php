@@ -31,13 +31,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/my-appointments', CustomerAppointments::class)->name('customer.appointments');
 
     // Admin Suite
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
         Route::get('/appointments', AppointmentDashboard::class)->name('dashboard');
         Route::get('/services', ServiceManager::class)->name('services');
     });
 
     // Staff Suite
-    Route::prefix('staff')->name('staff.')->group(function () {
+    Route::prefix('staff')->name('staff.')->middleware('role:staff')->group(function () {
         Route::get('/schedule', StaffScheduleManager::class)->name('schedule');
     });
 });

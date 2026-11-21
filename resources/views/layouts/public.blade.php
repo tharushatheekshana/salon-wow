@@ -37,9 +37,13 @@
                 </a>
 
                 @auth
-                    @if(auth()->user()->isAdmin() || auth()->user()->isStaff())
+                    @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-2 text-xs font-bold rounded-xl text-neutral-800 dark:text-neutral-200 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 transition">
                             Admin Portal
+                        </a>
+                    @elseif(auth()->user()->isStaff())
+                        <a href="{{ route('staff.schedule') }}" class="px-3.5 py-2 text-xs font-bold rounded-xl text-neutral-800 dark:text-neutral-200 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 transition">
+                            Staff Portal
                         </a>
                     @else
                         <a href="{{ route('customer.appointments') }}" class="px-3.5 py-2 text-xs font-bold rounded-xl text-neutral-800 dark:text-neutral-200 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 transition">
